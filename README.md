@@ -12,44 +12,9 @@ Horizon dự báo: **F1 (06/09/2025) → F56 (31/10/2025)**, chia làm hai giai 
 ```
 HBAAC2026/
 ├── train.csv              # Dữ liệu lịch sử bán hàng (bắt buộc)
-├── sample_submission.csv  # File mẫu từ ban tổ chức (bắt buộc)
 └── forecast.py            # Script dự báo
 ```
 
-> `train.csv` cần có ít nhất 3 cột: **`Date`**, **`ItemCode`**, **`Quantity`**.
-
----
-
-## Chạy trên Google Colab
-
-```python
-# 1. Mount Google Drive (nếu data lưu trên Drive)
-from google.colab import drive
-drive.mount('/content/drive')
-
-# 2. Copy script vào Colab (hoặc upload thủ công)
-# Giả sử data nằm tại: /content/drive/MyDrive/HBAAC2026/
-
-# 3. Sửa DATA_DIR trong forecast.py cho khớp đường dẫn
-import subprocess
-subprocess.run(['sed', '-i',
-    's|DATA_DIR = .*|DATA_DIR = "/content/drive/MyDrive/HBAAC2026"|',
-    'forecast.py'])
-
-# 4. Cài thư viện (thường đã có sẵn trên Colab)
-# !pip install pandas numpy
-
-# 5. Chạy script
-!python forecast.py
-```
-
-**Lưu ý Colab:**
-- Session bị reset sau ~12h (bản miễn phí) → file output sẽ mất nếu không lưu về Drive.
-- Nên copy `submission_v1.csv` ra Drive ngay sau khi chạy xong:
-  ```python
-  import shutil
-  shutil.copy('submission_v1.csv', '/content/drive/MyDrive/HBAAC2026/')
-  ```
 
 ---
 
@@ -68,14 +33,12 @@ DATA_DIR = "/kaggle/input/<tên-dataset>"   # sửa <tên-dataset> cho đúng
 # Sửa output_path trong build_submission:
 #   build_submission(panel, "/kaggle/working/submission_v1.csv")
 
-# 4. Chạy toàn bộ cell hoặc:
-# !python forecast.py
+# 4. Chạy toàn bộ cell
 ```
 
 **Lưu ý Kaggle:**
 - Không có quyền ghi vào `/kaggle/input/` → chỉ được ghi vào `/kaggle/working/`.
-- Sau khi chạy xong, file CSV trong `/kaggle/working/` sẽ hiển thị ở tab **Output** để tải về hoặc submit trực tiếp.
-- Internet mặc định bị tắt trên Kaggle; bật lên nếu cần cài thêm thư viện.
+- Sau khi chạy xong, file CSV trong `/kaggle/working/` sẽ hiển thị ở tab **Output** để tải về.
 
 ---
 
@@ -115,11 +78,11 @@ File `submission_v1.csv` sẽ được tạo trong thư mục `DATA_DIR`.
 
 ---
 
-## Giải thích các phần trong script
+## Giải thích
 
 ### 1. `load_data` — Đọc dữ liệu
 
-Đọc `train.csv`, parse cột `Date` thành kiểu datetime. Đây là bước đầu vào duy nhất.
+Đọc `train.csv`, parse cột `Date` thành kiểu datetime.
 
 ---
 
